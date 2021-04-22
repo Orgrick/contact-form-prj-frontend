@@ -1,0 +1,41 @@
+.contact-form {
+  min-height: 300px;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  background: #f8f8f8;
+  box-shadow: 1px 1px;
+  position: relative;
+  &__header {
+    position: absolute;
+    width: 100%;
+    right: 20px;
+  }
+  &__header-panel {
+    position: relative;
+    height: 50px;
+
+  }
+  &__front-side {
+    border-top: 50px solid #A83F2A;
+    border-right: 30px solid transparent;
+    height: 0;
+    width: 100%;
+  }
+  &__text {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    color: white;
+    font-size: 30px;
+  }
+  &__back-side {
+    width: 0;
+    height: 0;
+    border-top: 20px solid #6E211B; 
+    border-left: 20px solid transparent;
+  }
+}
