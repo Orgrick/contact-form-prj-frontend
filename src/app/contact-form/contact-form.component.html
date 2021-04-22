@@ -1,15 +1,109 @@
-<!-- <form action="">
-  <h2>Hello, {{ username ? username : 'Enter your name' }}</h2>
-  Enter your name to the input for change header
-  <input type="text" [(ngModel)]="username" [value] = "username" name="username">
-</form> -->
 <div class="contact-form">
+
   <div class="contact-form__header">
-    <div class="contact-form__header-panel">
-      <div class="contact-form__front-side"></div>
-      <div class="contact-form__text">Напишите нам</div>
-      <div class="contact-form__back-side"></div>
+    <div class="contact-form__header__wrapper">
+      <div class="contact-form__header-panel  ">
+        <div class="contact-form__header-panel__front-side"></div>
+        <div class="contact-form__header-panel__text">Напишите нам</div>
+        <div class="contact-form__header-panel__back-side"></div>
+      </div>
     </div>
+  </div>
+
+  <div class="contact-form__form-block">
+
+    <div class="contact-form__form-block__form-group">
+
+      <label for="name">Ваше имя:</label>
+
+      <div class="contact-form__form-block__form-group__input">
+        <img src="../../assets/icons/person_black_24dp.svg">
+        <input type="text" name="name">
+      </div>
+
+      <div class="contact-form__form-block__form-group__alert" hidden>
+        Обязательное поле
+      </div>
+
+    </div>
+
+    <div class="contact-form__form-block__form-group">
+
+      <label for="name">Ваш Email:</label>
+
+      <div class="contact-form__form-block__form-group__input">
+        <img src="../../assets/icons/email_black_24dp.svg">
+        <input type="text" name="name">
+      </div>
+
+      <div class="contact-form__form-block__form-group__alert" hidden>
+        Обязательное поле
+      </div>
+
+    </div>
+
+    <div class="contact-form__form-block__form-group">
+
+      <label for="name">Ваш телефон:</label>
+
+      <div class="contact-form__form-block__form-group__input">
+        <img src="../../assets/icons/phone_black_24dp.svg">
+        <input type="text" name="name" class="err">
+      </div>
+
+      <div class="contact-form__form-block__form-group__alert">
+        Обязательное поле
+      </div>
+
+    </div>
+
+    <div class="contact-form__form-block__form-group">
+
+      <label for="name">Тема:</label>
+
+      <div class="contact-form__form-block__form-group__input" >
+        <select name="" id="">.
+          <option value="">Техподдержка</option>
+          <option value="">Продажи</option>
+          <option value="">Другое</option>
+          <option value="">Еще один пункт</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="contact-form__form-block__form-group">
+
+      <label for="name">Ваше сообщение:</label>
+
+      <div class="contact-form__form-block__form-group__input" >
+        <textarea name="" class="err"></textarea>
+      </div>
+
+      <div class="contact-form__form-block__form-group__alert" >
+        Сообщение не должно быть пустым
+      </div>
+    </div>
+
+    <div class="contact-form__form-block__form-group">
+
+      <label for="name">Цифры:</label>
+
+      <div class="contact-form__form-block__form-group__captcha" >
+        <input type="text">
+        <img src="../../assets/captcha.jpg" alt="">
+      </div>
+
+      <div class="contact-form__form-block__form-group__alert contact-form__form-block__form-group__alert_captcha" hidden>
+        Ошибка, попробуйте еще раз
+      </div>
+    </div>
+
+    <button>
+      Отправить письмо!
+    </button>
+    
+
   </div>
 
 </div>

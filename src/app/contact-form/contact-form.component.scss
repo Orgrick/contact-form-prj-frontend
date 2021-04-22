@@ -8,34 +8,126 @@
   border-radius: 10px;
   background: #f8f8f8;
   box-shadow: 1px 1px;
-  position: relative;
   &__header {
+    position: relative;
+    &__wrapper {
     position: absolute;
     width: 100%;
-    right: 20px;
+    right: 30px;
+    }
   }
   &__header-panel {
-    position: relative;
     height: 50px;
+    &__front-side {
+      border-top: 50px solid #A83F2A;
+      border-right: 30px solid transparent;
+      height: 0;
+      width: 100%;
+    }
+    &__text {
+      position: absolute;
+      top: 10px;
+      left: 30px;
+      color: white;
+      font-size: 30px;
+    }
+    &__back-side {
+      width: 0;
+      height: 0;
+      border-top: 20px solid #6E211B; 
+      border-left: 20px solid transparent;
+    }
+  }
 
-  }
-  &__front-side {
-    border-top: 50px solid #A83F2A;
-    border-right: 30px solid transparent;
-    height: 0;
+  &__form-block{
+    margin-top: 70px;
+    padding: 10px;
     width: 100%;
+    &__form-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 20px;
+      label {
+        width: 20%;
+        font-weight: bold;
+      }
+      &__input {
+        width: 80%;
+        position: relative;
+        input, select{
+          height: 30px;
+          padding-left: 40px;
+          width: 100%;
+          outline: none;
+          border-radius: 8px;
+          border: 1px solid grey;
+          font-size: 20px;
+        }
+        select {
+          padding-left: 10px;
+          font-size: 15px;
+        }
+        input[class=err],textarea[class=err]{
+          border-color: red;
+        }
+        textarea {
+          padding: 5px;
+          width: 100%;
+          height: 60px;
+          border-radius: 8px;
+          border: 1px solid grey;
+          outline: none;
+          font-size: 15px;
+        }
+        img {
+          padding: 2px;
+          position: absolute;
+          left: 5px;
+          top: 2px;
+        }
+      }
+      &__captcha {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 80%;
+        padding-right: 20%;
+        img {
+          width: 50%;
+        }
+        input {
+          width: 40%;
+          height: 50px;
+          outline: none;
+          border-radius: 8px;
+          border: 1px solid grey;
+          font-size: 30px;
+          padding-left: 10px;
+          text-align: center;
+        }
+      }
+      &__alert {
+        margin-left: 16rem;
+        text-align: right;
+        color: red;
+        &_captcha {
+          margin-left: 5rem;
+        }
+      }
+    }
   }
-  &__text {
-    position: absolute;
-    top: 10px;
-    left: 30px;
-    color: white;
-    font-size: 30px;
-  }
-  &__back-side {
-    width: 0;
-    height: 0;
-    border-top: 20px solid #6E211B; 
-    border-left: 20px solid transparent;
+
+  button {
+    height: 30px;
+    width: 30%;
+    margin-left: 106px;
+    outline: none;
+    border-radius: 8px;
+    border: 1px solid grey;
+    font-size: 15px;
   }
 }
+

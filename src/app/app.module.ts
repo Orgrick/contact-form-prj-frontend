@@ -8,7 +8,7 @@ import { ContactFormComponent } from './contact-form/contact-form.component'
   declarations: [
     AppComponent,
     ContactFormComponent
-   ],
+     ],
   imports: [
     BrowserModule,
     FormsModule

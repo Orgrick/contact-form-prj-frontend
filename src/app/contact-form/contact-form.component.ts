@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core'
   styleUrls: ['./contact-form.component.scss']
 })
 export class ContactFormComponent implements OnInit {
-  username = 'username'
 
   ngOnInit(): void {
     console.log('init')
