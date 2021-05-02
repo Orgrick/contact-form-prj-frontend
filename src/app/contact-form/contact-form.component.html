@@ -10,63 +10,60 @@
     </div>
   </div>
 
-  <div class="contact-form__form-block">
+  <form class="contact-form__form-block" [formGroup]="feedbackForm">
 
-    <div class="contact-form__form-block__form-group">
+    <div class="contact-form__form-block__form-group" >
 
-      <label for="name">Ваше имя:</label>
+      <label>Ваше имя:</label>
 
-      <div class="contact-form__form-block__form-group__input">
+      <div class="contact-form__form-block__form-group__input" >
         <img src="../../assets/icons/person_black_24dp.svg">
-        <input type="text" name="name">
+        <input type="text" name="name" formControlName="name">
       </div>
 
-      <div class="contact-form__form-block__form-group__alert" hidden>
-        Обязательное поле
+      <div class="contact-form__form-block__form-group__alert" *ngIf="feedbackForm.controls['name'].invalid && feedbackForm.controls['name'].touched">
+        Некорректное имя
       </div>
 
     </div>
 
     <div class="contact-form__form-block__form-group">
 
-      <label for="name">Ваш Email:</label>
+      <label>Ваш Email:</label>
 
       <div class="contact-form__form-block__form-group__input">
         <img src="../../assets/icons/email_black_24dp.svg">
-        <input type="text" name="name">
+        <input type="text" name="email" formControlName="email">
       </div>
 
-      <div class="contact-form__form-block__form-group__alert" hidden>
-        Обязательное поле
+      <div class="contact-form__form-block__form-group__alert" *ngIf="feedbackForm.controls['email'].invalid && feedbackForm.controls['email'].touched">
+        Некорректный email
       </div>
 
     </div>
 
     <div class="contact-form__form-block__form-group">
 
-      <label for="name">Ваш телефон:</label>
+      <label>Ваш телефон:</label>
 
       <div class="contact-form__form-block__form-group__input">
         <img src="../../assets/icons/phone_black_24dp.svg">
-        <input type="text" name="name" class="err">
+        <input type="text" class="err" formControlName="tel" mask="+0(000) 000-00-00">
       </div>
 
-      <div class="contact-form__form-block__form-group__alert">
-        Обязательное поле
+      <div class="contact-form__form-block__form-group__alert" *ngIf="feedbackForm.controls['tel'].invalid && feedbackForm.controls['tel'].touched">
+        некорректный телефон
       </div>
 
     </div>
 
     <div class="contact-form__form-block__form-group">
 
-      <label for="name">Тема:</label>
+      <label>Тема:</label>
 
       <div class="contact-form__form-block__form-group__input" >
-        <select name="" id="">.
-          <option value="">Техподдержка</option>
-          <option value="">Продажи</option>
-          <option value="">Другое</option>
-          <option value="">Еще один пункт</option>
+        <select formControlName="theme">
+          <option *ngFor="let theme of themes">{{ theme }}</option>
         </select>
       </div>
 
@@ -74,24 +71,24 @@
 
     <div class="contact-form__form-block__form-group">
 
-      <label for="name">Ваше сообщение:</label>
+      <label>Ваше сообщение:</label>
 
       <div class="contact-form__form-block__form-group__input" >
-        <textarea name="" class="err"></textarea>
+        <textarea formControlName="message"></textarea>
       </div>
 
-      <div class="contact-form__form-block__form-group__alert" >
-        Сообщение не должно быть пустым
+      <div class="contact-form__form-block__form-group__alert" *ngIf="feedbackForm.controls['message'].invalid && feedbackForm.controls['message'].touched">
+        Некорректное сообщение
       </div>
     </div>
 
     <div class="contact-form__form-block__form-group">
 
-      <label for="name">Цифры:</label>
+      <label>Цифры:</label>
 
       <div class="contact-form__form-block__form-group__captcha" >
-        <input type="text">
-        <img src="../../assets/captcha.jpg" alt="">
+        <input type="number">
+        <img src="../../assets/captcha.jpg">
       </div>
 
       <div class="contact-form__form-block__form-group__alert contact-form__form-block__form-group__alert_captcha" hidden>
@@ -99,11 +96,11 @@
       </div>
     </div>
 
-    <button>
+    <button (click)="submit()" [disabled]="feedbackForm.controls['name'].invalid || feedbackForm.controls['email'].invalid || feedbackForm.controls['tel'].invalid">
       Отправить письмо!
     </button>
-    
 
-  </div>
+
+  </form>
 
 </div>

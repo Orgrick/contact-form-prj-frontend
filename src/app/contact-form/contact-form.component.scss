@@ -7,7 +7,7 @@
   border: 1px solid grey;
   border-radius: 10px;
   background: #f8f8f8;
-  box-shadow: 1px 1px;
+  box-shadow: -5px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
   &__header {
     position: relative;
     &__wrapper {
@@ -34,7 +34,7 @@
     &__back-side {
       width: 0;
       height: 0;
-      border-top: 20px solid #6E211B; 
+      border-top: 20px solid #6E211B;
       border-left: 20px solid transparent;
     }
   }
@@ -68,9 +68,6 @@
         select {
           padding-left: 10px;
           font-size: 15px;
-        }
-        input[class=err],textarea[class=err]{
-          border-color: red;
         }
         textarea {
           padding: 5px;
@@ -128,6 +125,22 @@
     border-radius: 8px;
     border: 1px solid grey;
     font-size: 15px;
+    &:hover{
+      cursor: pointer;
+      box-shadow: inset 0 0 2px;
+    }
+    &[disabled] {
+      cursor: inherit;
+    }
   }
 }
 
+.ng-invalid {
+  border-color: red!important;
+}
+.ng-untouched {
+  border-color: grey!important;
+}
+.ng-valid {
+  border-color: grey!important;
+}
