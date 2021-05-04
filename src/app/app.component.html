@@ -1,4 +1,17 @@
 <div class="container">
-  <app-contact-form *ngIf="!formHidden"></app-contact-form>
-  <button (click)="hideForm()">Скрыть</button>
+<app-contact-form *ngIf="!formHidden; else modal" (messageDelivered)="showModal($event)"></app-contact-form>
+  <ng-template #modal>
+    <div class="modal" *ngIf="messageIsSaved; else errorBlock">
+      Спасибо, информация сохранена!
+      <p>Ваше имя: {{ message.contactName }}</p>
+      <p>Тема: {{ message.theme }}</p>
+      <p>Текст сообщения: {{ message.content }}</p>
+    </div>
+    <ng-template #errorBlock>
+      <div class="modal">
+        <p>Что-то пошло не так, попробуйте еще раз</p>
+        <button (click)="formHidden = false">Попробовать еще раз</button>
+      </div>
+    </ng-template>
+  </ng-template>
 </div>

@@ -1,8 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
-import { ThemesService } from '../services/themes.service'
-import { FormsService } from '../services/forms.service'
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core'
+import { ThemesService, FormsService, CaptchaService } from '../services'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs'
+import { Feedback } from '../models/feedback.models'
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
 
 @Component({
   selector: 'app-contact-form',
@@ -11,68 +18,142 @@ import { Subscription } from 'rxjs'
   providers: [ThemesService, FormsService],
 })
 export class ContactFormComponent implements OnInit, OnDestroy {
-  constructor(private themesService: ThemesService) {}
+  @Output() messageDelivered = new EventEmitter<object>()
 
+  btnDisabled = false
+  captchaIsValid = true
+  captchaUrl?: SafeUrl
+  captchaCode?: string
   themes: [string?] = ['Загрузка...']
-
-  private subs: [Subscription?] = []
+  subs: [Subscription?] = []
 
   feedbackForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    tel: new FormControl('', [
-      Validators.required,
-      Validators.pattern(
-        '^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$'
-      ),
-    ]),
-    theme: new FormControl(null),
+    tel: new FormControl('', [Validators.required]),
+    theme: new FormControl('Другое'),
     message: new FormControl('', Validators.required),
   })
 
-  changeName(): void {
-    this.feedbackForm.controls.name.setValue(
-      this.feedbackForm.controls.name.value.trim()
-    )
-  }
+  constructor(
+    private themesService: ThemesService,
+    private formsService: FormsService,
+    private captchaService: CaptchaService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
-    this.themesService.getThemes().subscribe(
-      (data: any) => (this.themes = data),
-      (error) => (this.themes[0] = 'Другое')
-    )
+    this.loadThemes()
+
+    this.loadCaptcha()
 
     Object.keys(this.feedbackForm.controls)
       .filter((c) => c !== 'theme')
       .forEach((control) => {
         this.subs.push(this.subToChange(control))
       })
-    // this.subs.push(this.subToChange('theme'))
+  }
+
+  async submit(): Promise<void> {
+    this.btnDisabled = true
+    const captchaCorrect: boolean = await this.submitCaptcha()
+    if (!captchaCorrect) {
+      this.captchaIsValid = false
+      this.btnDisabled = false
+      return
+    }
+    this.submitFeedback()
+  }
+
+  loadThemes(): void {
+    this.themesService.getThemes().subscribe(
+      (data: any) => {
+        this.themes = data
+        this.feedbackForm.controls.theme.setValue(this.themes[0])
+      },
+      (error) => {
+        this.themes[0] = 'Другое'
+        this.feedbackForm.controls.theme.setValue(this.themes[0])
+      }
+    )
+  }
+
+  loadCaptcha(): void {
+    this.captchaService.getCaptcha().subscribe(
+      (image: Blob) => {
+        const captcha: string = URL.createObjectURL(image)
+        this.captchaUrl = this.sanitizer.bypassSecurityTrustUrl(captcha)
+        this.btnDisabled = false
+      },
+      (error) => {
+        this.captchaUrl = '../../assets/captchaError.jpg'
+        console.log(error)
+      }
+    )
   }
 
   subToChange(control: string): Subscription {
-    console.log('sub to change ' + control)
     return this.feedbackForm.controls[control].valueChanges.subscribe((val) => {
-      console.log('input value ' + control + val)
-      if (val !== val.trim()) {
-        this.feedbackForm.controls[control].setValue(val.trim())
-      }
       if (control === 'tel') {
         const formatted: string = val.trim().replace(/[^+\d]/g, '')
         if (val !== formatted) {
           this.feedbackForm.controls[control].setValue(formatted)
         }
+        return
+      }
+      if (
+        (control === 'message' || control === 'name') &&
+        val === val.trimStart()
+      ) {
+        return
+      }
+      if (val !== val.trim()) {
+        this.feedbackForm.controls[control].setValue(val.trim())
       }
     })
   }
 
-  submit(): void {}
+  submitCaptcha(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.captchaService.postCode(this.captchaCode).subscribe(
+        (data: any) => {
+          if (data?.success) {
+            resolve(true)
+            return
+          }
+          resolve(false)
+        },
+        (error) => {
+          console.log(error)
+          reject(false)
+        }
+      )
+    })
+  }
+
+  submitFeedback(): void {
+    const body: Feedback = {
+      name: this.feedbackForm.controls.name.value,
+      email: this.feedbackForm.controls.email.value,
+      tel: this.feedbackForm.controls.tel.value,
+      theme: this.feedbackForm.controls.theme.value,
+      message: this.feedbackForm.controls.message.value,
+    }
+    this.formsService.postFeedback(body).subscribe(
+      (data: any) => {
+        if (data?.resMes) {
+          this.messageDelivered.emit(data)
+        }
+      },
+      (error) => {
+        this.messageDelivered.emit(error)
+      }
+    )
+  }
 
   ngOnDestroy(): void {
     this.subs.forEach((sub) => {
       sub?.unsubscribe()
-      console.log('unsub to: ')
-      console.log(sub)
     })
   }
 }

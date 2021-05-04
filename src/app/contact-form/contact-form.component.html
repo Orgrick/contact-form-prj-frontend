@@ -48,7 +48,7 @@
 
       <div class="contact-form__form-block__form-group__input">
         <img src="../../assets/icons/phone_black_24dp.svg">
-        <input type="text" class="err" formControlName="tel" mask="+0(000) 000-00-00">
+        <input type="text" class="err" formControlName="tel" prefix="+7" mask=" (000) 000-00-00">
       </div>
 
       <div class="contact-form__form-block__form-group__alert" *ngIf="feedbackForm.controls['tel'].invalid && feedbackForm.controls['tel'].touched">
@@ -87,19 +87,19 @@
       <label>Цифры:</label>
 
       <div class="contact-form__form-block__form-group__captcha" >
-        <input type="number">
-        <img src="../../assets/captcha.jpg">
+        <input type="text" [(ngModel)]="captchaCode" [ngModelOptions] = "{standalone: true}" maxlength="4" (ngModelChange)="this.captchaIsValid = true">
+        <img [src]=captchaUrl alt="" (click)="loadCaptcha()">
       </div>
 
-      <div class="contact-form__form-block__form-group__alert contact-form__form-block__form-group__alert_captcha" hidden>
+      <div [hidden]="captchaIsValid"
+        class="contact-form__form-block__form-group__alert contact-form__form-block__form-group__alert_captcha">
         Ошибка, попробуйте еще раз
       </div>
     </div>
 
-    <button (click)="submit()" [disabled]="feedbackForm.controls['name'].invalid || feedbackForm.controls['email'].invalid || feedbackForm.controls['tel'].invalid">
+    <button (click)="submit()" [disabled]="feedbackForm.controls['name'].invalid || feedbackForm.controls['email'].invalid || feedbackForm.controls['tel'].invalid || feedbackForm.controls['message'].invalid || btnDisabled">
       Отправить письмо!
     </button>
-
 
   </form>
 
